@@ -4,12 +4,13 @@
     <meta charset="UTF-8">
     <title>Awesome한 계산기</title>
 </head>
+<link rel="stylesheet" th:href="@{/css/calculator.css}">
 <body>
 <h1>Awesome한 계산기</h1>
 
 <form th:action="@{/calculate}" method="post">
     <label for="num1">Number 1:</label>
-    <input type="number" step="any" id="num1" name="num1"><br>
+    <input type="number" step="any" id="num1" name="num1" required><br>
 
     <label for="num2">Number 2:</label>
     <input type="number" step="any" id="num2" name="num2"><br>
@@ -25,8 +26,12 @@
     <button type="submit">계산하기</button>
 </form>
 
-<div th:if="${result != null}">
+<div th:if="${result != null}" class="result">
     <p>결과: <span th:text="${result}"></span></p>
+</div>
+
+<div th:if="${errorMessage}" class="error">
+    <p>Error: <span th:text="${errorMessage}"></span></p>
 </div>
 
 </body>
