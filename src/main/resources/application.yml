@@ -1,3 +1,20 @@
 spring:
   application:
     name: firstproject
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  endpoint:
+    health:
+      show-details: always
+  info:
+    env:
+      enabled: true
+
+info:
+  app:
+    name: Demo App
+    version: 1.0.0
