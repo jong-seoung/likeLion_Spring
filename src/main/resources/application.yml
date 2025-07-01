@@ -1,6 +1,10 @@
 spring:
   application:
     name: firstproject
+  datasource:
+    url: jdbc:postgresql://localhost:5432/memo_app
+    username: 앱 이름 입력하기
+    password: 비밀번호 입력하기
 
 management:
   endpoints:

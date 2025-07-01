@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" th:href="@{/css/memo.css}">
+    <title>memo edit</title>
+</head>
+<body>
+<h1>메모 수정</h1>
+<form th:action="@{/memo/edit}" method="post">
+    <input type="hidden" name="id" th:value="${memo.id}" />
+    <input type="text" name="title" th:value="${memo.title}" required />
+    <br />
+    <textarea name="content" th:text="${memo.content}" required></textarea>
+    <br />
+    <button type="submit">수정 완료</button>
+    <a href="/memo" class="cancel">취소</a>
+</form>
+</body>
+</html>
