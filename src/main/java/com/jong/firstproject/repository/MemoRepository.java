@@ -1,6 +1,8 @@
 package com.jong.firstproject.repository;
 
 import com.jong.firstproject.model.Memo;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.Environment;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
@@ -10,6 +12,9 @@ import java.util.List;
 @Repository
 public class MemoRepository {
     private final JdbcTemplate jdbcTemplate;
+
+    @Autowired
+    private Environment env;
 
     public MemoRepository(JdbcTemplate jdbcTemplate){
         this.jdbcTemplate = jdbcTemplate;
@@ -23,6 +28,7 @@ public class MemoRepository {
             );
 
     public List<Memo> findAll(){
+        System.out.println("APP_NAME: " + env.getProperty("APP_NAME"));
         return jdbcTemplate.query(
                 "SELECT * FROM memo ORDER BY id DESC", memoRowMapper
         );
