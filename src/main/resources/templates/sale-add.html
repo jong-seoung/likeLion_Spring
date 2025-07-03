@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" th:href="@{/css/dashboard.css}">
+    <title>memo edit</title>
+</head>
+<body>
+<h1>➕ 신규 매출 입력</h1>
+<form th:action="@{/sales/add}" method="post" class="form-container">
+    <div class="form-row">
+        <label>판매일:
+            <input type="date" name="saleDate" required />
+        </label>
+    </div>
+    <div class="form-row">
+        <label>고객 ID:
+            <input type="number" name="customerId" min="1" required />
+        </label>
+    </div>
+    <div class="form-row">
+        <label>금액:
+            <input type="number" name="amount" step="0.01" min="0" required />
+        </label>
+    </div>
+    <div class="form-actions">
+        <button type="submit">저장</button>
+        <a href="/add" class="cancel-link">취소</a>
+    </div>
+</form>
+</body>
+</html>
