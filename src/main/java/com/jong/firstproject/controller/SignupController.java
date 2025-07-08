@@ -1,6 +1,6 @@
 package com.jong.firstproject.controller;
 
-import com.jong.firstproject.dto.SignupDTO;
+import com.jong.firstproject.dto.SignupDto;
 import com.jong.firstproject.model.User;
 import com.jong.firstproject.repository.UserRepository;
 import jakarta.validation.Valid;
@@ -19,31 +19,37 @@ public class SignupController {
 
     @GetMapping("/signup")
     public String showSignup(Model model) {
-        model.addAttribute("signupDto", new SignupDTO());
+        model.addAttribute("signupDto", new SignupDto());
 
         return "signup";
     }
 
     @PostMapping("/signup")
     public String doSignup(
-            @Valid @ModelAttribute("signupDto") SignupDTO signupDTO,
+            @Valid @ModelAttribute("signupDto") SignupDto signupDTO,
             BindingResult bindingResult,
             Model model
             ) {
-        System.out.println(1);
+
         System.out.println(model);
         if (bindingResult.hasErrors()) {
             return "signup";
         }
-        System.out.println(2);
+
         // 중복 가입 여부 체크
+        if (userRepository.findByUsername(signupDTO.getUsername()) != null) {
+            model.addAttribute("error", "이미 사용 중인 아이디입니다");
+
+            return "signup";
+        }
+
         User user = User.builder()
                 .username(signupDTO.getUsername())
                 .password(signupDTO.getPassword())
                 .build();
 
         userRepository.save(user);
-        System.out.println(3);
+
         return "redirect:/dto/login?registered";
     }
 }
