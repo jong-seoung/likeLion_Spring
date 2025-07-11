@@ -1,6 +1,8 @@
 package com.jong.firstproject.controller;
 
+import com.jong.firstproject.dto.CommentDto;
 import com.jong.firstproject.dto.PostDto;
+import com.jong.firstproject.model.Comment;
 import com.jong.firstproject.model.JpaUser;
 import com.jong.firstproject.model.Post;
 import com.jong.firstproject.repository.CommentRepository;
@@ -11,10 +13,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
 
@@ -64,5 +63,47 @@ public class PostController {
         postRepository.save(post);
 
         return "redirect:/jpa/posts";
+    }
+
+    @GetMapping("/{id}")
+    public String detail(
+            @PathVariable Integer id,
+            Model model,
+            HttpSession httpSession
+    ) {
+        Post post = postRepository.findById(id).orElseThrow();
+
+        model.addAttribute("commentDto", new CommentDto());
+        model.addAttribute("post", post);
+
+        return "post-detail";
+    }
+
+    @PostMapping("/{postId}/comments")
+    public String addComment(
+            @PathVariable Integer postId,
+            @Valid @ModelAttribute CommentDto commentDto,
+            BindingResult bindingResult,
+            HttpSession httpSession,
+            Model model
+    ) {
+        Post post = postRepository.findById(postId).orElseThrow();
+
+        if (bindingResult.hasErrors()) {
+            model.addAttribute("post", post);
+
+            return "post-detail";
+        }
+
+        JpaUser jpaUser = currentUser(httpSession);
+        Comment comment = Comment.builder()
+                .post(post)
+                .author(jpaUser)
+                .text(commentDto.getText())
+                .createdAt(LocalDateTime.now())
+                .build();
+        commentRepository.save(comment);
+
+        return "redirect:/jpa/posts/" + postId;
     }
 }

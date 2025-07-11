@@ -47,4 +47,11 @@ public class JpaLoginController {
 
         return "redirect:/jpa/posts";
     }
+
+    @GetMapping("/logout")
+    public String logout(HttpSession session) {
+        session.invalidate();
+
+        return "redirect:/jpa/login";
+    }
 }
